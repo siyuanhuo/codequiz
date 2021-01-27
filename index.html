@@ -8,15 +8,71 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
   <body>
-    <div class="container">
-      <div class="row">
-        <div class="col-12" style="border: 2px solid black">
-          
+    <nav class="navbar navbar-light bg-light">
+      <div class="container-fluid">
+        <span class="navbar-brand mb-0 h1">Siyuan's Code Quiz</span>
+        <span class="navbar-text">
+          Timer: <span id="timer">60</span>
+        </span>
+      </div>
+      
+    </nav>
+    <br>
+    <div class="container" id="startPage"></div>
+
+    <div class="container" id="quizPage">
+      <div class="card" style="width: 100%;">
+        <div class="card-body">
+          <h5 class="card-title">Question #1</h5>
+          <p class="card-text">WWW stands for:</p>
+          <div class="d-grid gap-2 col-6 mx-auto">
+            <button type="button" class="btn btn-primary" id="answer-a">A. 
+              World Worm Web</button>
+            <button type="button" class="btn btn-primary" id="answer-b">B. 
+              World Wide Web</button>
+            <button type="button" class="btn btn-primary" id="answer-c">C. 
+              World Word Web</button>
+            <button type="button" class="btn btn-primary" id="answer-d">D. 
+              None of the above</button>
+          </div>
         </div>
       </div>
     </div>
 
-
-    <script src="asset/script.js"></script>
+    <div class="container" id="endPage"></div>
+    <script>
+      var questions = [
+        {
+          question: "WWW stands for:",
+          selection: {
+            a: "World Worm Web",
+            b: "World Wide Web",
+            c: "World Word Web",
+            d: "None of the above"
+          },
+          answer: "b"
+        },
+        {
+          question: "________ is used to communicate from one city to another.",
+          selection: {
+            a: "WAN",
+            b: "MAN",
+            c: "LAN",
+            d: "All of the above"
+          },
+          answer: "a"
+        },
+        {
+          question: "A________________ is a group of independent computers attached to one another through communication media.",
+          selection: {
+            a: "Internet",
+            b: "E-mail",
+            c: "Network",
+            d: "All of the above"
+          },
+          answer: "c"
+        }
+      ]
+    </script>
   </body>
 </html>
