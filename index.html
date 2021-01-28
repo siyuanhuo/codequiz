@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="asset/style.css">
   <title>Code Quiz</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
 </head>
@@ -20,20 +19,16 @@
     <br>
     <div class="container" id="startPage"></div>
 
-    <div class="container" id="quizPage">
+    <div class="container d-none" id="quizPage">
       <div class="card" style="width: 100%;">
         <div class="card-body">
           <h5 class="card-title">Question #1</h5>
           <p class="card-text">WWW stands for:</p>
           <div class="d-grid gap-2 col-6 mx-auto">
-            <button type="button" class="btn btn-primary" id="answer-a">A. 
-              World Worm Web</button>
-            <button type="button" class="btn btn-primary" id="answer-b">B. 
-              World Wide Web</button>
-            <button type="button" class="btn btn-primary" id="answer-c">C. 
-              World Word Web</button>
-            <button type="button" class="btn btn-primary" id="answer-d">D. 
-              None of the above</button>
+            <button type="button" onClick="selectAnswer(event, questionNumber, 'a')" class="btn btn-primary" id="answer-a">A. World Worm Web</button>
+            <button type="button" onClick="selectAnswer(event, 'b')" class="btn btn-primary" id="answer-b">B. World Wide Web</button>
+            <button type="button" onClick="selectAnswer(event, 'c')" class="btn btn-primary" id="answer-c">C. World Word Web</button>
+            <button type="button" onClick="selectAnswer(event, 'd')" class="btn btn-primary" id="answer-d">D. None of the above</button>
           </div>
         </div>
       </div>
@@ -73,6 +68,49 @@
           answer: "c"
         }
       ]
+      var timer
+      var timeRemain
+
+      function startQuiz() {
+        timeRemain = 60
+        timer = setInterval(countDown, 1000)
+        for (var i = 0; i < questions.length; i++) {
+          toQuestion(i)
+        }
+        endQuiz()
+      }
+
+      function countDown() {
+        timeRemain--
+        document.querySelector('#timer').innerHTML = timeRemain
+        if (timeRemain <= 0) {
+          endQuiz()
+        }
+      }
+
+      function toQuestion(questionNumber) {
+        var currentQuestion = questions[questionNumber]
+        document.querySelector('#quizPage').innerHTML = `
+        <div class="card" style="width: 100%;">
+          <div class="card-body">
+            <h5 class="card-title">Question #${questionNumber}</h5>
+            <p class="card-text">${currentQuestion.question}</p>
+            <div class="d-grid gap-2 col-6 mx-auto">
+              <button type="button" class="btn btn-primary" id="answer-a">A. 
+                ${currentQuestion.selection.a}</button>
+              <button type="button" class="btn btn-primary" id="answer-b">B. 
+                ${currentQuestion.selection.b}</button>
+              <button type="button" class="btn btn-primary" id="answer-c">C. 
+                ${currentQuestion.selection.c}</button>
+              <button type="button" class="btn btn-primary" id="answer-d">D. 
+                ${currentQuestion.selection.d}</button>
+            </div>
+          </div>
+        </div>
+        `
+      }
+
+      function endQuiz() {}
     </script>
   </body>
 </html>
