@@ -17,7 +17,11 @@
       
     </nav>
     <br>
-    <div class="container" id="startPage"></div>
+    <div class="container" id="startPage">
+      <div class="d-grid gap-2 col-6 mx-auto">
+        <button class="btn btn-primary" type="button" onClick="startQuiz()">Start Quiz</button>
+      </div>
+    </div>
 
     <div class="container d-none" id="quizPage">
       <div class="card" style="width: 100%;">
@@ -25,7 +29,7 @@
           <h5 class="card-title">Question #1</h5>
           <p class="card-text">WWW stands for:</p>
           <div class="d-grid gap-2 col-6 mx-auto">
-            <button type="button" onClick="selectAnswer(event, questionNumber, 'a')" class="btn btn-primary" id="answer-a">A. World Worm Web</button>
+            <button type="button" onClick="selectAnswer(event, 'a')" class="btn btn-primary" id="answer-a">A. World Worm Web</button>
             <button type="button" onClick="selectAnswer(event, 'b')" class="btn btn-primary" id="answer-b">B. World Wide Web</button>
             <button type="button" onClick="selectAnswer(event, 'c')" class="btn btn-primary" id="answer-c">C. World Word Web</button>
             <button type="button" onClick="selectAnswer(event, 'd')" class="btn btn-primary" id="answer-d">D. None of the above</button>
@@ -34,7 +38,19 @@
       </div>
     </div>
 
-    <div class="container" id="endPage"></div>
+    <div class="container d-none" id="scorePage">
+      <div class="row justify-content-md-center">
+        <div class="card text-center" style="width: 18rem;">
+          <div class="card-body">
+            <h5 class="card-title">Your Score Is: </h5>
+            <p class="card-text" id="final-score"></p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+
+
     <script>
       var questions = [
         {
@@ -70,47 +86,71 @@
       ]
       var timer
       var timeRemain
+      var current = 0
+      var score = 0
 
       function startQuiz() {
+        // console.log('[startQuiz]')
         timeRemain = 60
         timer = setInterval(countDown, 1000)
-        for (var i = 0; i < questions.length; i++) {
-          toQuestion(i)
-        }
-        endQuiz()
+        console.log(timeRemain)
+        // console.log(timer)
+        toQuestion(current)
       }
 
-      function countDown() {
-        timeRemain--
-        document.querySelector('#timer').innerHTML = timeRemain
+      function countDown(value=1) {
         if (timeRemain <= 0) {
           endQuiz()
         }
+        timeRemain -= value
+        document.querySelector('#timer').innerHTML = timeRemain
+        
       }
 
       function toQuestion(questionNumber) {
-        var currentQuestion = questions[questionNumber]
-        document.querySelector('#quizPage').innerHTML = `
-        <div class="card" style="width: 100%;">
-          <div class="card-body">
-            <h5 class="card-title">Question #${questionNumber}</h5>
-            <p class="card-text">${currentQuestion.question}</p>
-            <div class="d-grid gap-2 col-6 mx-auto">
-              <button type="button" class="btn btn-primary" id="answer-a">A. 
-                ${currentQuestion.selection.a}</button>
-              <button type="button" class="btn btn-primary" id="answer-b">B. 
-                ${currentQuestion.selection.b}</button>
-              <button type="button" class="btn btn-primary" id="answer-c">C. 
-                ${currentQuestion.selection.c}</button>
-              <button type="button" class="btn btn-primary" id="answer-d">D. 
-                ${currentQuestion.selection.d}</button>
+        document.querySelector('#startPage').classList.add("d-none")
+        if (questionNumber < questions.length) {
+          var currentQuestion = questions[questionNumber]
+          document.querySelector('#quizPage').innerHTML = `
+            <div class="card" style="width: 100%;">
+              <div class="card-body">
+                <h5 class="card-title">Question #${questionNumber+1}</h5>
+                <p class="card-text">${currentQuestion.question}</p>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                  <button type="button" class="btn btn-primary" onClick="selectAnswer(event, 'a')" id="answer-a">A. ${currentQuestion.selection.a}</button>
+                  <button type="button" class="btn btn-primary" onClick="selectAnswer(event, 'b')" id="answer-b">B. ${currentQuestion.selection.b}</button>
+                  <button type="button" class="btn btn-primary" onClick="selectAnswer(event, 'c')" id="answer-c">C. ${currentQuestion.selection.c}</button>
+                  <button type="button" class="btn btn-primary" onClick="selectAnswer(event, 'd')" id="answer-d">D. ${currentQuestion.selection.d}</button>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        `
+          `
+          document.querySelector('#quizPage').classList.remove("d-none")
+        }else {
+          endQuiz()
+        }
+        
       }
 
-      function endQuiz() {}
+      function selectAnswer(event, selection) {
+        event.preventDefault()
+        var currentAnswer = questions[current].answer
+        console.log(currentAnswer)
+        if (selection === currentAnswer) {
+          score++
+        }else {
+          countDown(10)
+        }
+        current++
+        toQuestion(current)
+      }
+
+      function endQuiz() {
+        clearInterval(timer)
+        document.querySelector('#quizPage').classList.add("d-none")
+        document.querySelector('#final-score').innerHTML = `${score}/3`
+        document.querySelector('#scorePage').classList.remove("d-none")
+      }
     </script>
   </body>
 </html>
